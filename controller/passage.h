@@ -10,8 +10,11 @@ extern "C" {
 #include "utils.h"
 #include "model/model.h"
 
-char * psg_header=NULL;
-int psg_header_len=0;
+char * psg_header_btitle=NULL;
+int psg_header_btitle_len=0;
+
+char * psg_header_atitle=NULL;
+int psg_header_atitle_len=0;
 
 char * psg_footer=NULL;
 int psg_footer_len=0;
@@ -20,11 +23,17 @@ char * psg_nofound=NULL;
 int psg_nofound_len=0;
 
 void controller_passage_init(){
-    psg_header = textFileRead("./view/passage/header.tpl");
-    if(psg_header)
-        psg_header_len=strlen(psg_header);
+    psg_header_btitle = textFileRead("./view/passage/header_btitle.tpl");
+    if(psg_header_btitle)
+        psg_header_btitle_len=strlen(psg_header_btitle);
     else
-        psg_header_len=0;
+        psg_header_btitle_len=0;
+        
+    psg_header_atitle = textFileRead("./view/passage/header_atitle.tpl");
+    if(psg_header_atitle)
+        psg_header_atitle_len=strlen(psg_header_atitle);
+    else
+        psg_header_atitle_len=0;
         
     psg_footer = textFileRead("./view/passage/footer.tpl");
     if(psg_footer)
@@ -40,7 +49,8 @@ void controller_passage_init(){
 }
 
 void controller_passage_destroy(){
-    if(psg_header)free(psg_header);
+    if(psg_header_btitle)free(psg_header_btitle);
+    if(psg_header_atitle)free(psg_header_atitle);
     if(psg_footer)free(psg_footer);
     if(psg_nofound)free(psg_nofound);
 }
@@ -50,13 +60,28 @@ LWAN_HANDLER(passage)
     
     response->mime_type = "text/html";
     
-    if(psg_header_len>0)
-        lwan_strbuf_append_str(response->buffer, psg_header, psg_header_len);
+    int havep=0;
+    const char * id=NULL;
     
     // url:/psg/{id}
     // id偏移量：url+5
     if(request->url.len>7){
-        const char * id=request->url.value+5;
+        id=request->url.value+5;
+    }
+    
+    if(psg_header_btitle>0)
+        lwan_strbuf_append_str(response->buffer, psg_header_btitle, psg_header_btitle_len);
+    
+    if(id){
+        if(!model_passage_title_send(id,response)){
+            
+        }
+    }
+    
+    if(psg_header_atitle>0)
+        lwan_strbuf_append_str(response->buffer, psg_header_atitle, psg_header_atitle_len);
+    
+    if(id){
         if(!model_passage_send(id,response)){
             if(psg_nofound_len>0)
                 lwan_strbuf_append_str(response->buffer, psg_nofound, psg_nofound_len);

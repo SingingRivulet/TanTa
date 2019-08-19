@@ -72,6 +72,16 @@ int  model_passage_index_send   (const char * page,struct lwan_response * respon
     }
     
 }
+int  model_passage_title_send   (const char * id,struct lwan_response * response){
+    std::string val;
+    if(m->getTitleRender(id,val)){
+        int len=val.size();
+        if(len>0)
+            lwan_strbuf_append_str(response->buffer, val.c_str(), len);
+        return 1;
+    }
+    return 0;
+}
 void model_passage_add          (char * outid,int len,const char * title,const char * cont,const char * user){
     std::string id;
     m->addPassage(id,title,cont,user);

@@ -17,6 +17,7 @@ int  model_passage_del          (const char * id);
 
 int  model_passage_send         (const char * id,struct lwan_response * response);
 int  model_passage_display_send (const char * id,struct lwan_response * response);
+int  model_passage_title_send   (const char * id,struct lwan_response * response);
 
 int  model_passage_index_send   (const char * page,struct lwan_response * response);
 #endif

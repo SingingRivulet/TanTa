@@ -3,6 +3,8 @@
 #include "controller/index.h"
 #include "controller/passage.h"
 #include "controller/sendpsg.h"
+#include "controller/login.h"
+#include "controller/newuser.h"
 
 int
 main(void)
@@ -10,7 +12,8 @@ main(void)
     const struct lwan_url_map default_map[] = {
         { .prefix = "/", .handler = LWAN_HANDLER_REF(index) },
         { .prefix = "/psg/", .handler = LWAN_HANDLER_REF(passage) },
-        { .prefix = "/sendpsg", .handler = LWAN_HANDLER_REF(sendpsg) },
+        { .prefix = "/api/sendpsg", .handler = LWAN_HANDLER_REF(sendpsg) },
+        { .prefix = "/api/login", .handler = LWAN_HANDLER_REF(login) },
         { .prefix = "/static/", SERVE_FILES("./static") },
         { .prefix = NULL }
     };

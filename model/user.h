@@ -20,6 +20,8 @@ class user:public passage{
                 if(!value.empty())
                     return false;//用户已存在
             }
+            setPwd(name,pwd);
+            return true;
         }
         bool isLoged(const std::string & name,const std::string & token){//是否登录（检查token）
             std::string value;

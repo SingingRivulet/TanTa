@@ -1,23 +1,36 @@
-#ifndef blog_admin
-#define blog_admin
+#ifndef blog_sendpsg
+#define blog_sendpsg
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
+#include <stdlib.h>
 #include <lwan/lwan.h>
 #include <lwan/lwan-mod-serve-files.h>
 LWAN_HANDLER(sendpsg)
 {
-    static const char message[] = "<br>";
-
     response->mime_type = "text/html";
-    //lwan_strbuf_set_static(response->buffer, message, sizeof(message) - 1);
-    lwan_strbuf_append_str(response->buffer, message, sizeof(message) - 1);
-    if(request->url.len!=0)
-        lwan_strbuf_append_str(response->buffer, request->url.value, request->url.len - 1);
-    lwan_strbuf_append_str(response->buffer, message, sizeof(message) - 1);
-    lwan_strbuf_append_str(response->buffer, request->original_url.value, request->original_url.len - 1);
+    
+    const char * user       = lwan_request_get_post_param(request,"user");
+    const char * token      = lwan_request_get_post_param(request,"token");
+    const char * title      = lwan_request_get_post_param(request,"title");
+    const char * content    = lwan_request_get_post_param(request,"content");
+    if(user==NULL || token==NULL || title==NULL || content==NULL){
+        static const char noarg[] = "noarg";
+        lwan_strbuf_set_static(response->buffer, noarg, sizeof(noarg) - 1);
+        return HTTP_OK;
+    }
+    
+    if(model_user_isLoged(user,token)==0){
+        static const char nologin[] = "nologin";
+        lwan_strbuf_set_static(response->buffer, nologin, sizeof(nologin) - 1);
+        return HTTP_OK;
+    }
+    
+    char idbuf[128];
+    model_passage_add(idbuf,128,title,content,user);
+    lwan_strbuf_set(response->buffer,idbuf,strlen(idbuf));
 
     return HTTP_OK;
 }

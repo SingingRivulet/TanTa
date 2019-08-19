@@ -256,9 +256,18 @@ class passage{
             out = value;
             return true;
         }
+        bool getTitleRender(const std::string & id,std::string & out){//文章渲染
+            std::string value;
+            leveldb::Status s = cache->Get(leveldb::ReadOptions(), std::string("title_")+id, &value);
+            if (!s.ok())
+                return false;
+            out = value;
+            return true;
+        }
         void delRender(const std::string & id){
             cache->Delete(leveldb::WriteOptions(), std::string("display_")+id);
             cache->Delete(leveldb::WriteOptions(), std::string("content_")+id);
+            cache->Delete(leveldb::WriteOptions(), std::string("title_")+id);
         }
         void render(
             const std::string & id , 
@@ -273,6 +282,9 @@ class passage{
             
             contentRender(out,id,title,content,user,tm);
             cache->Put(leveldb::WriteOptions(), std::string("content_")+id, out);
+            
+            out=titlefilter(title);
+            cache->Put(leveldb::WriteOptions(), std::string("title_")+id, out);
         }
         
     private:
