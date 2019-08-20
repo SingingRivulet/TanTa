@@ -10,7 +10,7 @@ extern "C" {
 #include <lwan/lwan-mod-serve-files.h>
 LWAN_HANDLER(sendpsg)
 {
-    response->mime_type = "text/html";
+    response->mime_type = "text/html;charset=utf-8";
     
     const char * user       = lwan_request_get_post_param(request,"user");
     const char * token      = lwan_request_get_post_param(request,"token");

@@ -58,7 +58,7 @@ void controller_passage_destroy(){
 LWAN_HANDLER(passage)
 {
     
-    response->mime_type = "text/html";
+    response->mime_type = "text/html;charset=utf-8";
     
     int havep=0;
     const char * id=NULL;
@@ -74,7 +74,8 @@ LWAN_HANDLER(passage)
     
     if(id){
         if(!model_passage_title_send(id,response)){
-            
+            static const char nofound[] = "Page No Found!";
+            lwan_strbuf_append_str(response->buffer, nofound, sizeof(nofound) - 1);
         }
     }
     

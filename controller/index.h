@@ -36,7 +36,7 @@ void controller_index_destroy(){
 }
 
 LWAN_HANDLER(index){
-    response->mime_type = "text/html";
+    response->mime_type = "text/html;charset=utf-8";
     
     const char * url = request->url.value;
     

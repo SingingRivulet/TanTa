@@ -64,7 +64,7 @@ int  model_passage_index_send   (const char * page,struct lwan_response * respon
     if(haveNext){
         auto rid=ids.rbegin();
         if(rid!=ids.rend()){
-            std::string np=std::string("\n<br/><a class='next-page' href='/")+*rid+"'>下一页</a>";
+            std::string np=std::string("\n<br/><a class='next-page' href='/")+*rid+"'>下一页</a></br/>";
             const char * ptr = np.c_str();
             int len = np.size();
             lwan_strbuf_append_str(response->buffer, ptr, len);

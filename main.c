@@ -14,6 +14,7 @@ main(void)
         { .prefix = "/psg/", .handler = LWAN_HANDLER_REF(passage) },
         { .prefix = "/api/sendpsg", .handler = LWAN_HANDLER_REF(sendpsg) },
         { .prefix = "/api/login", .handler = LWAN_HANDLER_REF(login) },
+        { .prefix = "/api/newuser", .handler = LWAN_HANDLER_REF(newuser) },
         { .prefix = "/static/", SERVE_FILES("./static") },
         { .prefix = NULL }
     };

@@ -6,12 +6,23 @@
 extern "C" {
 #endif
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <lwan/lwan.h>
 #include <lwan/lwan-mod-serve-files.h>
 LWAN_HANDLER(newuser)
-{//此函数请在conf里面配置，且使用完马上删除！
-    response->mime_type = "text/html";
+{
+    response->mime_type = "text/html;charset=utf-8";
+    
+    FILE * fp = fopen("ALLOW_CREATE_USER","r");
+    if(fp==NULL){
+        static const char forbid[] = "强制新建用户功能已被禁用！";
+        lwan_strbuf_set_static(response->buffer, forbid, sizeof(forbid) - 1);
+        return HTTP_OK;
+    }
+    
+    fclose(fp);
+    
     const char * user       = lwan_request_get_post_param(request,"user");
     const char * pwd        = lwan_request_get_post_param(request,"pwd");
     
