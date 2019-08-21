@@ -76,11 +76,22 @@ int  model_passage_title_send   (const char * id,struct lwan_response * response
     std::string val;
     if(m->getTitleRender(id,val)){
         int len=val.size();
-        if(len>0)
+        if(len>0){
             lwan_strbuf_append_str(response->buffer, val.c_str(), len);
-        return 1;
+            return 1;
+        }
     }
     return 0;
+}
+int  model_passage_send_json    (const char * id,struct lwan_response * response){
+    std::string val;
+    m->getPassage(id,val);
+    if(val.empty()){
+        static const char notexist[] = "notexist!";
+        lwan_strbuf_set_static(response->buffer, notexist, sizeof(notexist) - 1);
+    }else{
+        lwan_strbuf_set(response->buffer,val.c_str(),val.size());
+    }
 }
 void model_passage_add          (char * outid,int len,const char * title,const char * cont,const char * user){
     std::string id;

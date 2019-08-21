@@ -72,11 +72,13 @@ LWAN_HANDLER(passage)
     if(psg_header_btitle>0)
         lwan_strbuf_append_str(response->buffer, psg_header_btitle, psg_header_btitle_len);
     
+    static const char nofound[] = "Page No Found!";
     if(id){
         if(!model_passage_title_send(id,response)){
-            static const char nofound[] = "Page No Found!";
             lwan_strbuf_append_str(response->buffer, nofound, sizeof(nofound) - 1);
         }
+    }else{
+        lwan_strbuf_append_str(response->buffer, nofound, sizeof(nofound) - 1);
     }
     
     if(psg_header_atitle>0)
@@ -87,6 +89,9 @@ LWAN_HANDLER(passage)
             if(psg_nofound_len>0)
                 lwan_strbuf_append_str(response->buffer, psg_nofound, psg_nofound_len);
         }
+    }else{
+        if(psg_nofound_len>0)
+            lwan_strbuf_append_str(response->buffer, psg_nofound, psg_nofound_len);
     }
     
     if(psg_footer_len>0)

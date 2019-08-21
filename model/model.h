@@ -16,6 +16,7 @@ int  model_passage_set          (const char * id,const char * title,const char *
 int  model_passage_del          (const char * id);
 
 int  model_passage_send         (const char * id,struct lwan_response * response);
+int  model_passage_send_json    (const char * id,struct lwan_response * response);
 int  model_passage_display_send (const char * id,struct lwan_response * response);
 int  model_passage_title_send   (const char * id,struct lwan_response * response);
 

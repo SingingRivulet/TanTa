@@ -13,9 +13,12 @@ main(void)
         { .prefix = "/", .handler = LWAN_HANDLER_REF(index) },
         { .prefix = "/psg/", .handler = LWAN_HANDLER_REF(passage) },
         { .prefix = "/api/sendpsg", .handler = LWAN_HANDLER_REF(sendpsg) },
+        { .prefix = "/api/getpsg", .handler = LWAN_HANDLER_REF(getpsg) },
+        { .prefix = "/api/delpsg", .handler = LWAN_HANDLER_REF(delpsg) },
+        { .prefix = "/api/editpsg", .handler = LWAN_HANDLER_REF(editpsg) },
         { .prefix = "/api/login", .handler = LWAN_HANDLER_REF(login) },
         { .prefix = "/api/newuser", .handler = LWAN_HANDLER_REF(newuser) },
-        { .prefix = "/static/", SERVE_FILES("./static") },
+        { .prefix = "/static", SERVE_FILES("./static") },
         { .prefix = NULL }
     };
     struct lwan l;

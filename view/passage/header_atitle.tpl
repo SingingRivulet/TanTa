@@ -1,1 +1,3 @@
-<!DOCTYPE html>
+</title>
+</head>
+<body>
