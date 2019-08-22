@@ -42,6 +42,25 @@ function user() {
 			}
 		);
 	};
+	s.isloged=function (callback) {
+		if(s.user && s.token){
+			$.post(
+				"/api/isloged",
+				{
+					"user" : s.user,
+					"token": s.token
+				},
+				function (res) {
+					if(res=="1")
+						callback(true);
+					else
+						callback(false);
+				}
+			);
+		}else
+			if(callback)
+				callback(false);
+	};
 	readStorage();
 	return s;
 }

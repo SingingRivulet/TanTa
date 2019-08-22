@@ -5,6 +5,7 @@
 #include "controller/sendpsg.h"
 #include "controller/login.h"
 #include "controller/newuser.h"
+#include "controller/userstatus.h"
 
 int
 main(void)
@@ -18,6 +19,7 @@ main(void)
         { .prefix = "/api/editpsg", .handler = LWAN_HANDLER_REF(editpsg) },
         { .prefix = "/api/login", .handler = LWAN_HANDLER_REF(login) },
         { .prefix = "/api/newuser", .handler = LWAN_HANDLER_REF(newuser) },
+        { .prefix = "/api/isloged", .handler = LWAN_HANDLER_REF(isloged) },
         { .prefix = "/static", SERVE_FILES("./static") },
         { .prefix = NULL }
     };

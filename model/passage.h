@@ -196,7 +196,7 @@ class passage{
             bool succ = false;
             
             cJSON * json=cJSON_Parse(value.c_str());
-            if(json->type==cJSON_Object){
+            if(json->type!=cJSON_Object){
                 cJSON_Delete(json);
                 return false;
             }

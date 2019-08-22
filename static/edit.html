@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>TanTa-登录</title>
+		<title>TanTa-Editor</title>
 		<meta charset="utf-8"/>
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
@@ -12,6 +12,13 @@
 		<script type="text/javascript" >
 			var p  = sendPassage();
 			var id = null;
+			function tryloadPsg() {
+				var h=window.location.hash;
+				if(h){
+					h=h.substr(1);
+					loadPassage(h);
+				}
+			}
 			function loadPassage(d) {
 				id=null;
 				p.get(d,function (data) {
@@ -33,12 +40,18 @@
 					else
 						p.send(title,cont);
 				});
+				tryloadPsg();
 			});
+			window.onhashchange=function () {
+				tryloadPsg();
+			}
 		</script>
 	</head>
 	<body>
-		<input type="text" id="title"/>
-		<textarea id="content"></textarea>
-		<input type="button" id="subm"/>
+		<input placeholder="标题" type="text" id="title"/>
+		<textarea id="content" class="form-control"></textarea><br>
+		<div style="float:right;">
+			<button id="subm" >提交</button>
+		</div>
 	</body>
 </html>

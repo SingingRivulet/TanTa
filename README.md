@@ -28,8 +28,10 @@ make
 ```
 
 ### 4.配置  
-```
-make createUserOn
-```
-然后用浏览器配置  
+先执行 `  make createUserOn `  
+然后用浏览器进入 ` http://你的地址/static/newUser.html ` 配置  
 配置完一定记得执行 ` make createUserOff ` 关闭强制创建功能！！！  
+
+### 5.使用  
+首先进入 ` 网址/static/login.html ` 登录  
+然后打开 ` 网址/static/edit.html ` 发表文章  
