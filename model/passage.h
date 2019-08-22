@@ -67,30 +67,33 @@ class passage{
         ){
             std::string value;
             leveldb::Status s = passages->Get(leveldb::ReadOptions(), id, &value);
-            if (!s.ok())
+            if (!s.ok() || value.empty())
                 return false;
             
             cJSON * json=cJSON_Parse(value.c_str());
-            if(json->type==cJSON_Object){
+            if(json->type!=cJSON_Object){
                 cJSON_Delete(json);
                 return false;
             }
             
-            cJSON * item;
             //cjson的查找是遍历，故不应使用cJSON_GetObjectItem
             cJSON *c=json->child;
             while (c){
                 if(strcmp(c->string,"title")==0     && c->type==cJSON_String){
                     title   = c->valuestring;
+                    printf("title:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"content")==0   && c->type==cJSON_String){
                     content = c->valuestring;
+                    printf("content:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"user")==0      && c->type==cJSON_String){
                     user    = c->valuestring;
+                    printf("user:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"time")==0      && c->type==cJSON_String){
                     tm      = c->valuestring;
+                    printf("time:%s\n",c->valuestring);
                 }
                 c=c->next;
             }
@@ -104,7 +107,10 @@ class passage{
             std::string user;
             std::string tm;
             //重组数据，保证安全
-            getPassage(id , title , content , user , tm);
+            if(!getPassage(id , title , content , user , tm)){
+                res="notexist!";
+                return;
+            }
             
             cJSON *json=cJSON_CreateObject();
             cJSON_AddStringToObject(json,"title"    ,title.c_str());
@@ -158,7 +164,7 @@ class passage{
                 return false;
             
             cJSON * json=cJSON_Parse(value.c_str());
-            if(json->type==cJSON_Object){
+            if(json->type!=cJSON_Object){
                 cJSON_Delete(json);
                 return false;
             }

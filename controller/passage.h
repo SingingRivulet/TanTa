@@ -64,9 +64,8 @@ LWAN_HANDLER(passage)
     const char * id=NULL;
     
     // url:/psg/{id}
-    // id偏移量：url+5
-    if(request->url.len>7){
-        id=request->url.value+5;
+    if(request->url.len>3){
+        id=request->url.value;
     }
     
     if(psg_header_btitle>0)

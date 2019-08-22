@@ -101,15 +101,16 @@ void displayRender(
     const std::string & user,
     const std::string & time
 ){
-    std::string cont = utf8Cut(content,64) + "  \n" + user + "\t" + time + "\n";
+    std::string cont = utf8Cut(content,64);
     std::string contHTML;
     
     markdownRender(contHTML , cont);
     
-    res = std::string("<section><div class = 'psg-title'><a href='/psg/") + id + "'>" +
+    res = std::string("<section class='psg-display'><div class = 'psg-title'><a href='/psg/") + id + "'>" +
         titlefilter(title) +
-        "</a></div>" + 
-        cont + 
+        "</a></div><div class='psg-display'>" + 
+        contHTML +
+        "</div><div class = 'psg-user'>" + user + "</div><time class = 'psg-time'>" + time + "</time>"
         "</section>\n";
 }
 void contentRender(
@@ -120,15 +121,15 @@ void contentRender(
     const std::string & user,
     const std::string & time
 ){
-    std::string cont = content + "  \n" + user + "\t" + time + "\n";
+    std::string cont = content + "  \n";
     std::string contHTML;
     
     markdownRender(contHTML , cont);
     
     res = std::string("<div class = 'psg-title'><a href='/psg/") + id + "'>" +
         titlefilter(title) +
-        "</a></div>" + 
-        cont;
+        "</a></div>" + "<div class = 'psg-content'>" +
+        contHTML + "</div><div class = 'psg-user'>" + user + "</div><time class = 'psg-time'>" + time + "</time>";
 }
 inline void randString(int len , std::string & res){
     res.clear();

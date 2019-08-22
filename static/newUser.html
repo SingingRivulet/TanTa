@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>TanTa-新建用户</title>
+		<meta charset="utf-8"/>
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		<script src="/static/js/jquery.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" >
+			var url="/api/newuser";
+			$(document).ready(function(){
+				$("#subm").click(function () {
+					var user=$("#user").val();
+					var pwd=$("#pwd").val();
+					$.post(
+						url,
+						{
+							"user" :user,
+							"pwd"  :pwd
+						},
+						function (res) {
+							alert(res);
+						}
+					);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<input type="text" id="user"/>
+		<input type="password" id="pwd"/>
+		<input type="button" id="subm"/>
+	</body>
+</html>
