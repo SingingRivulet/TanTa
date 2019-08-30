@@ -2822,10 +2822,10 @@
             var cursor    = cm.getCursor();
             var selection = cm.getSelection();
 
-            cm.replaceSelection("~~" + selection + "~~");
+            cm.replaceSelection("<del>" + selection + "</del>");
 
             if(selection === "") {
-                cm.setCursor(cursor.line, cursor.ch + 2);
+                cm.setCursor(cursor.line, cursor.ch + 5);
             }
         },
 

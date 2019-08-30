@@ -38,10 +38,20 @@
 			$(document).ready(function(){
 				
 				$(function() {
-					testEditor = editormd("test-editormd", {
+					window.mdEditor = editormd("test-editormd", {
 						width   : "100%",
 						height  : 320,
-						path    : "/static/editormd/lib/"
+						path    : "/static/editormd/lib/",
+						emoji: false,
+     					taskList: true, 
+						tocm: true,         // Using [TOCM]
+   					tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+   					flowChart: true,             // 开启流程图支持，默认关闭
+   					sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+   					emoji: false,
+   					toolbarIcons : function() {
+   						return ["undo","redo","|","bold","del","italic","quote","uppercase","lowercase","|","h1","h2","h3","h4","h5","h6","|","list-ul","list-ol","hr","|","watch","preview","fullscreen","|","help","info"];
+   					}
 					});
 				});
 				
