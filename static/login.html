@@ -15,7 +15,9 @@
 				$("#subm").click(function () {
 					var user=$("#user").val();
 					var pwd=$("#pwd").val();
-					u.login(user,pwd);
+					u.login(user,pwd,function () {
+						window.location.href="admin.html";
+					});
 				});
 			});
 		</script>

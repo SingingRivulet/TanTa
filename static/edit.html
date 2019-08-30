@@ -4,10 +4,12 @@
 		<title>TanTa-Editor</title>
 		<meta charset="utf-8"/>
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/css/editormd.css" rel="stylesheet"/>
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/main.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
+		<script src="/static/js/editormd.js"></script>
 		<script src="/static/js/main.js"></script>
 		<script type="text/javascript" >
 			var p  = sendPassage();
@@ -17,7 +19,9 @@
 				if(h){
 					h=h.substr(1);
 					loadPassage(h);
-				}
+					$("#subm").text("保存");
+				}else
+					$("#subm").text("发布");
 			}
 			function loadPassage(d) {
 				id=null;
@@ -32,13 +36,36 @@
 				});
 			}
 			$(document).ready(function(){
+				
+				$(function() {
+					testEditor = editormd("test-editormd", {
+						width   : "100%",
+						height  : 320,
+						path    : "/static/editormd/lib/"
+					});
+				});
+				
 				$("#subm").click(function () {
 					var title=$("#title").val();
 					var cont=$("#content").val();
 					if(id)
 						p.edit(id,title,cont);
 					else
-						p.send(title,cont);
+						p.send(title,cont,function (res) {
+							window.location.href="#"+res;
+						});
+				});
+				$("#subm_prev").click(function () {
+					var cont=$("#content").val();
+					$.post(
+						"/api/preview",
+						{
+							"content":cont
+						},
+						function (res) {
+							$("#preview").html(res);
+						}
+					);
 				});
 				tryloadPsg();
 			});
@@ -49,9 +76,13 @@
 	</head>
 	<body>
 		<input placeholder="标题" type="text" id="title"/>
-		<textarea id="content" class="form-control"></textarea><br>
+		<div id="test-editormd">
+			<textarea id="content" class="form-control"></textarea>
+		</div><br>
 		<div style="float:right;">
-			<button id="subm" >提交</button>
+			<button id="subm" ></button>
+			<button id="subm_prev" >预览</button>
 		</div>
+		<div id="preview"></div>
 	</body>
 </html>

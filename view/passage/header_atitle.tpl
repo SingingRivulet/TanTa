@@ -59,8 +59,11 @@
 			
 		</script>
 		<style type="text/css">
+			html,body{
+				height:100%;
+			}
 			.psg-title{
-				font-size:50px;
+				font-size:35px;
 			}
 			.psg-user{
 				display: inline;

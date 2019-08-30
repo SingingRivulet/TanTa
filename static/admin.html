@@ -9,10 +9,39 @@
 		<script src="/static/js/main.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
 		<script type="text/javascript" >
-			
+			var u = user();
+			$(document).ready(function(){
+				window.ifm=document.getElementById("ifm");
+				ifm.height=window.screen.height;
+				u.isloged(function (res) {
+					if(!res){
+						window.location.href="login.html";
+					}
+				});
+			});
+			function logout() {
+				u.logout();
+				window.location.href="login.html";
+			}
 		</script>
 	</head>
 	<body>
-	
+		<br><br>
+		<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-2 column">
+				<div class="list-group">
+					<div class="lstbox">
+						<a class="list-group-item" href="javascript:(function(){ifm.src='edit.html';})()">发表</a> 
+						<a class="list-group-item" href="javascript:(function(){ifm.src='setPwd.html';})()">修改密码</a> 
+						<a class="list-group-item" href="javascript:logout()">登出</a> 
+					</div>
+				</div>
+			</div>
+			<div class="col-md-10 column">
+				<iframe src="edit.html" id="ifm" style="width:100%;border:none;"></iframe>
+			</div>
+		</div>
+		</div>
 	</body>
 </html>

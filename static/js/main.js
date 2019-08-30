@@ -22,7 +22,7 @@ function user() {
 		s.token=t;
 		saveStorage();
 	};
-	s.login=function (u,p) {
+	s.login=function (u,p,callback) {
 		$.post(
 			"/api/login",
 			{
@@ -36,8 +36,10 @@ function user() {
 				if(res=="fail!"){
 					alert("密码错误");
 				}else{
-					alert("成功");
+					alert("登录成功");
 					s.set(u,res);
+					if(callback)
+						callback();
 				}
 			}
 		);
@@ -60,6 +62,29 @@ function user() {
 		}else
 			if(callback)
 				callback(false);
+	};
+	s.setPwd=function (pwd,callback) {
+		$.post(
+			"/api/changepwd",
+			{
+				"user" : s.user,
+				"token": s.token,
+				"pwd"  : pwd
+			},
+			function (res) {
+				if(res=="noarg!"){
+					alert("参数异常");
+				}else
+				if(res=="nologin!"){
+					alert("未登录");
+				}else
+				if(res=="ok!"){
+					alert("设置成功");
+					if(callback)
+						callback();
+				}
+			}
+		);
 	};
 	readStorage();
 	return s;

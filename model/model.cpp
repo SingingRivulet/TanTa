@@ -58,6 +58,15 @@ int  model_passage_index_send   (const char * page,struct lwan_response * respon
     }else{
         haveNext=m->getIndex(ids,20);
     }
+    if(ids.empty()){
+        if(!page)
+            return 1;
+        else{
+            static const char nofound[] = "<h1>Page No Found!</h1>";
+            lwan_strbuf_append_str(response->buffer, nofound, sizeof(nofound) - 1);
+            return 0;
+        }
+    }
     for(auto it:ids){
         model_passage_display_send(it.c_str(),response);
     }
@@ -70,7 +79,7 @@ int  model_passage_index_send   (const char * page,struct lwan_response * respon
             lwan_strbuf_append_str(response->buffer, ptr, len);
         }
     }
-    
+    return 1;
 }
 int  model_passage_title_send   (const char * id,struct lwan_response * response){
     std::string val;
@@ -97,6 +106,37 @@ void model_passage_add          (char * outid,int len,const char * title,const c
     std::string id;
     m->addPassage(id,title,cont,user);
     snprintf(outid,len,"%s",id.c_str());
+}
+void model_passage_preview      (const char * data,struct lwan_response * response){
+    if(data==NULL)
+        return;
+    int inlen = strlen(data);
+    if(inlen<=0)
+        return;
+    
+    int l=inlen*5;
+    auto ob = bufnew(l>65535?65535:l);
+    
+    struct sd_callbacks callbacks;
+    struct html_renderopt options;
+    struct sd_markdown *markdown;
+    
+    sdhtml_renderer(&callbacks, &options, 0);
+    markdown = sd_markdown_new(0, 16, &callbacks, &options);
+    
+    sd_markdown_render(ob, (const unsigned char*)data, inlen, markdown);
+    
+    if(ob->size > 0){
+        if(ob->data[0]!='\0'){
+            ob->data[ob->size-1]='\0';//封住底部
+            auto outd = (const char *)ob->data;
+            lwan_strbuf_set(response->buffer,outd,strlen(outd));
+        }
+    }
+    
+    sd_markdown_free(markdown);
+    
+    bufrelease(ob);
 }
 int  model_passage_set          (const char * id,const char * title,const char * cont,const char * user){
     return m->setPassage(id,title,cont,user)?1:0;

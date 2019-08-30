@@ -40,18 +40,23 @@ LWAN_HANDLER(index){
     
     const char * url = request->url.value;
     
+    int psgstatus;
+    
     if(index_header_len>0)
         lwan_strbuf_append_str(response->buffer, index_header, index_header_len);
     
     if(request->url.len>0)
-        model_passage_index_send(request->url.value , response);
+        psgstatus = model_passage_index_send(request->url.value , response);
     else
-        model_passage_index_send(NULL,response);
+        psgstatus = model_passage_index_send(NULL,response);
     
     if(index_footer_len!=0)
         lwan_strbuf_append_str(response->buffer, index_footer, index_footer_len);
     
-    return HTTP_OK;
+    if(psgstatus)
+        return HTTP_OK;
+    else
+        return HTTP_NOT_FOUND;
 }
 
 #if defined(__cplusplus)

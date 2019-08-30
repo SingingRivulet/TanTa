@@ -31,6 +31,33 @@ LWAN_HANDLER(login)
     return HTTP_OK;
 }
 
+LWAN_HANDLER(changepwd)
+{
+    response->mime_type = "text/html;charset=utf-8";
+    
+    const char * user       = lwan_request_get_post_param(request,"user");
+    const char * token      = lwan_request_get_post_param(request,"token");
+    const char * pwd        = lwan_request_get_post_param(request,"pwd");
+    if(user==NULL || token==NULL || pwd==NULL){
+        static const char noarg[] = "noarg!";
+        lwan_strbuf_set_static(response->buffer, noarg, sizeof(noarg) - 1);
+        return HTTP_OK;
+    }
+    
+    if(model_user_isLoged(user,token)==0){
+        static const char nologin[] = "nologin!";
+        lwan_strbuf_set_static(response->buffer, nologin, sizeof(nologin) - 1);
+        return HTTP_OK;
+    }
+    
+    model_user_setPwd(user,pwd);
+    
+    static const char cpsuccess[] = "ok!";
+    lwan_strbuf_set_static(response->buffer, cpsuccess, sizeof(cpsuccess) - 1);
+
+    return HTTP_OK;
+}
+
 #if defined(__cplusplus)
 }
 #endif

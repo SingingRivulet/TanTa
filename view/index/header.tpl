@@ -9,8 +9,20 @@
 		<script src="/static/js/bootstrap.min.js"></script>
 		<script type="text/javascript" >
 			$(document).ready(function () {
-				$("section").addClass("well");
+			
+				var sections = $("section");
+				sections.addClass("well");
+				sections.click(function (d) {
+					try{
+						var link = d.currentTarget.children[0].firstChild.href;
+						window.location.href=link;
+					}catch (e) {
+						
+					}
+				});
+				
 				$("#top-menu").height(window.screen.height);
+				
 				window.OriginTitile = document.title;
 				function leavingPage() {
 					if (document.hidden) {
@@ -19,7 +31,7 @@
 					} else {
 						document.title = "(/≧▽≦/)咦！又好了！ " + window.OriginTitile;
 						titleTime = setTimeout(function() {
-								document.title = window.OriginTitile
+								document.title = window.OriginTitile;
 							},
 							2000
 						);
@@ -31,6 +43,9 @@
 			
 		</script>
 		<style type="text/css">
+			html,body{
+				height:100%;
+			}
 			.fixed {
 				width: 1000px;
 				height: 70px;
@@ -67,6 +82,6 @@
 		<div class="row clearfix">
 			<div class="col-md-2 column">
 			</div>
-			<div class="col-md-8 column" style="background:rgba(255,255,255,1);">
+			<div class="col-md-8 column" style="background:rgba(255,255,255,1);border: 1px solid #e3e3e3;border-radius: 4px;">
 				<br/>
 				<h2>文章</h2>

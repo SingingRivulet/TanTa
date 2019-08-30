@@ -112,7 +112,16 @@ LWAN_HANDLER(getpsg)
     
     return HTTP_OK;
 }
-
+LWAN_HANDLER(preview)
+{
+    response->mime_type = "text/html;charset=utf-8";
+    
+    const char * content = lwan_request_get_post_param(request,"content");
+    if(content){
+        model_passage_preview(content,response);
+    }
+    return HTTP_OK;
+}
 
 #if defined(__cplusplus)
 }
