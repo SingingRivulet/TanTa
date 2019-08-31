@@ -1,7 +1,7 @@
 blog:main.c
 	cd markdown && make
 	cd model && make
-	gcc main.c model/model.o model/cJSON.o markdown/libsundown.so -llwan -lpthread -lm -ggdb -o blog -I./ -lleveldb -lstdc++
+	gcc main.c model/model.a markdown/libsundown.so -llwan -lpthread -lm -ggdb -o blog -I./ -lleveldb -lstdc++
 	-mkdir data
 clean:
 	-cd markdown && make clean

@@ -36,7 +36,7 @@ class user:public passage{
             std::string value;
             leveldb::Status s = users->Get(leveldb::ReadOptions(), std::string("pwd_")+name , &value);
             if(s.ok()){
-                if(value==pwd)
+                if(value==sha256(pwd))
                     return true;
             }
             return false;
@@ -46,7 +46,7 @@ class user:public passage{
             users->Put(leveldb::WriteOptions(), std::string("token_")+name , token);
         }
         void setPwd(const std::string & name,const std::string & pwd){//设置密码
-            users->Put(leveldb::WriteOptions(), std::string("pwd_")+name , pwd);
+            users->Put(leveldb::WriteOptions(), std::string("pwd_")+name , sha256(pwd));
         }
         bool login(const std::string & name,const std::string & pwd,std::string & token){//登录
             if(checkPwd(name,pwd)){
