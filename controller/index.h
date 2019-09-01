@@ -36,9 +36,28 @@ void controller_index_destroy(){
 }
 
 LWAN_HANDLER(index){
+    const char * url = request->url.value;
+    
     response->mime_type = "text/html;charset=utf-8";
     
-    const char * url = request->url.value;
+    if(request->url.len>0){
+        const char * p;
+        char c;
+        p = url;
+        while(1){
+            c=*p;
+            if(c=='\0')
+                break;
+            
+            if((c>='a' && c<='f') || (c>='0' && c<='9') || c==':' || c=='-'){
+                
+            }else{
+                return HTTP_NOT_FOUND;
+            }
+            
+            ++p;
+        }
+    }
     
     int psgstatus;
     

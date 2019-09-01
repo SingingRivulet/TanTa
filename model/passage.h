@@ -1,6 +1,7 @@
 #ifndef blog_model_passage
 #define blog_model_passage
 #include <leveldb/db.h>
+#include <atomic>
 #include "utils.h"
 class passage{
     public:
@@ -81,19 +82,19 @@ class passage{
             while (c){
                 if(strcmp(c->string,"title")==0     && c->type==cJSON_String){
                     title   = c->valuestring;
-                    printf("title:%s\n",c->valuestring);
+                    //printf("title:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"content")==0   && c->type==cJSON_String){
                     content = c->valuestring;
-                    printf("content:%s\n",c->valuestring);
+                    //printf("content:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"user")==0      && c->type==cJSON_String){
                     user    = c->valuestring;
-                    printf("user:%s\n",c->valuestring);
+                    //printf("user:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"time")==0      && c->type==cJSON_String){
                     tm      = c->valuestring;
-                    printf("time:%s\n",c->valuestring);
+                    //printf("time:%s\n",c->valuestring);
                 }
                 c=c->next;
             }
@@ -133,7 +134,13 @@ class passage{
             std::string tm;
             getTime(tm);
             
-            id=tm;//id为时间（暂定）
+            {
+                long itm = time(NULL);
+                int sunq = sendTimes++;
+                char idstr[64];
+                snprintf(idstr,sizeof(idstr),"%lx-%x",itm,sunq);
+                id=idstr;//id为时间（暂定）
+            }
             
             indexer->Put(leveldb::WriteOptions(), sindex , id);
             
@@ -298,5 +305,7 @@ class passage{
         leveldb::DB * passages;
         leveldb::DB * indexer;
         leveldb::DB * cache;
+        
+        std::atomic<int> sendTimes;
 };
 #endif
