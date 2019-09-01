@@ -7,9 +7,13 @@
 #include "controller/newuser.h"
 #include "controller/userstatus.h"
 
+SEND_FILE_HANDLER_CREATE(favicon,"./view/favicon.ico","image/x-icon");
+SEND_FILE_HANDLER_CREATE(robots_txt,"./view/robots.txt","text/txt");
+
 int
 main(void)
 {
+    
     const struct lwan_url_map default_map[] = {
         { .prefix = "/", .handler = LWAN_HANDLER_REF(index) },
         { .prefix = "/psg/", .handler = LWAN_HANDLER_REF(passage) },
@@ -25,7 +29,9 @@ main(void)
         { .prefix = "/api/isloged", .handler = LWAN_HANDLER_REF(isloged) },
         { .prefix = "/api/changepwd", .handler = LWAN_HANDLER_REF(changepwd) },
         
-        //{ .prefix = "/favicon.ico", .handler = LWAN_HANDLER_REF(favicon) },
+        { .prefix = "/favicon.ico", .handler = SEND_FILE_HANDLER(favicon) },
+        { .prefix = "/robots.txt", .handler = SEND_FILE_HANDLER(robots_txt) },
+        
         { .prefix = "/static", SERVE_FILES("./static") },
         { .prefix = NULL }
     };
@@ -33,6 +39,10 @@ main(void)
 
     lwan_init(&l);
     model_init();
+    
+    SEND_FILE_HANDLER_INIT(favicon);
+    SEND_FILE_HANDLER_INIT(robots_txt);
+    
     controller_passage_init();
     controller_index_init();
 
@@ -43,6 +53,10 @@ main(void)
     
     controller_passage_destroy();
     controller_index_destroy();
+    
+    SEND_FILE_HANDLER_CLOSE(favicon);
+    SEND_FILE_HANDLER_CLOSE(robots_txt);
+    
     model_close();
 
     return 0;
