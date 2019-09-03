@@ -2,7 +2,9 @@
 #define blog_model_passage
 #include <leveldb/db.h>
 #include <atomic>
+#include <string.h>
 #include "utils.h"
+#include "classify.h"
 class passage{
     public:
         passage(){
@@ -63,6 +65,7 @@ class passage{
             const std::string & id , 
             std::string & title , 
             std::string & content , 
+            std::string & classify , 
             std::string & user , 
             std::string & tm
         ){
@@ -82,19 +85,18 @@ class passage{
             while (c){
                 if(strcmp(c->string,"title")==0     && c->type==cJSON_String){
                     title   = c->valuestring;
-                    //printf("title:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"content")==0   && c->type==cJSON_String){
                     content = c->valuestring;
-                    //printf("content:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"user")==0      && c->type==cJSON_String){
                     user    = c->valuestring;
-                    //printf("user:%s\n",c->valuestring);
                 }else
                 if(strcmp(c->string,"time")==0      && c->type==cJSON_String){
                     tm      = c->valuestring;
-                    //printf("time:%s\n",c->valuestring);
+                }else
+                if(strcmp(c->string,"classify")==0      && c->type==cJSON_String){
+                    classify= c->valuestring;
                 }
                 c=c->next;
             }
@@ -105,10 +107,11 @@ class passage{
         void getPassage(const std::string & id , std::string & res){
             std::string title;
             std::string content;
+            std::string classify;
             std::string user;
             std::string tm;
             //重组数据，保证安全
-            if(!getPassage(id , title , content , user , tm)){
+            if(!getPassage(id , title , content , classify , user , tm)){
                 res="notexist!";
                 return;
             }
@@ -118,6 +121,7 @@ class passage{
             cJSON_AddStringToObject(json,"content"  ,content.c_str());
             cJSON_AddStringToObject(json,"user"     ,user.c_str());
             cJSON_AddStringToObject(json,"time"     ,tm.c_str());
+            cJSON_AddStringToObject(json,"classify" ,classify.c_str());
             char * out=cJSON_PrintUnformatted(json);
             res = out;
             free(out);
@@ -127,6 +131,7 @@ class passage{
             std::string & id , 
             const std::string & title , 
             const std::string & content , 
+            const std::string & classify , 
             const std::string & user
         ){
             std::string sindex;
@@ -144,10 +149,15 @@ class passage{
             
             indexer->Put(leveldb::WriteOptions(), sindex , id);
             
+            if(!classify.empty()){//有分类
+                classes.add(classify,id);
+            }
+            
             cJSON *json=cJSON_CreateObject();
             
             cJSON_AddStringToObject(json,"title"    ,title.c_str());
             cJSON_AddStringToObject(json,"content"  ,content.c_str());
+            cJSON_AddStringToObject(json,"classify" ,classify.c_str());
             cJSON_AddStringToObject(json,"user"     ,user.c_str());
             cJSON_AddStringToObject(json,"time"     ,tm.c_str());
             cJSON_AddStringToObject(json,"indexer"  ,sindex.c_str());
@@ -163,6 +173,7 @@ class passage{
             const std::string & id , 
             const std::string & title , 
             const std::string & content , 
+            const std::string & classify , 
             const std::string & user
         ){
             std::string value;
@@ -178,6 +189,26 @@ class passage{
             
             std::string tm;
             getTime(tm);
+            
+            auto classObj=cJSON_GetObjectItem(json,"classify");
+            if(classObj){
+                if(classify == classObj->valuestring){//与原来分类相同
+                    
+                }else{//不同
+                    if(!classify.empty()){//新的类别存在
+                        classes.add(classify,id);
+                    }
+                    if(strlen(classObj->valuestring)>0){//旧的类别存在
+                        classes.del(classObj->valuestring , id);
+                    }
+                    cJSON_ReplaceItemInObject(json , "classify", cJSON_CreateString(classify.c_str()));
+                }
+            }else{
+                cJSON_AddStringToObject(json , "classify" , classify.c_str());
+                if(!classify.empty()){//新的类别存在
+                    classes.add(classify,id);
+                }
+            }
             
             cJSON_ReplaceItemInObject(json , "title"   , cJSON_CreateString(title.c_str()));
             cJSON_ReplaceItemInObject(json , "content" , cJSON_CreateString(content.c_str()));
@@ -214,6 +245,10 @@ class passage{
             while (c){
                 if(strcmp(c->string,"indexer")==0 && c->type==cJSON_String){
                     indexer->Delete(leveldb::WriteOptions(), c->valuestring);
+                }else
+                if(strcmp(c->string,"classify")==0 && c->type==cJSON_String){
+                    if(strlen(c->valuestring)>0)
+                        classes.del(c->valuestring , id);
                 }
                 c=c->next;
             }
@@ -307,5 +342,8 @@ class passage{
         leveldb::DB * cache;
         
         std::atomic<int> sendTimes;
+        
+        classify classes;
+        
 };
 #endif

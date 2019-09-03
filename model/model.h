@@ -11,8 +11,8 @@ int  model_user_isLoged (const char * name,const char * token);
 int  model_user_checkPwd(const char * name,const char * pwd);
 void model_user_setPwd  (const char * name,const char * pwd);
 
-void model_passage_add          (char * id,int len,const char * title,const char * cont,const char * user);
-int  model_passage_set          (const char * id,const char * title,const char * cont,const char * user);
+void model_passage_add          (char * id,int len,const char * title,const char * cont,const char * classify,const char * user);
+int  model_passage_set          (const char * id,const char * title,const char * cont,const char * classify,const char * user);
 int  model_passage_del          (const char * id);
 
 int  model_passage_send         (const char * id,struct lwan_response * response);

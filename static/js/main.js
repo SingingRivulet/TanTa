@@ -92,14 +92,15 @@ function user() {
 
 function sendPassage() {
 	var s=user();
-	s.send=function (title,cont,callback) {
+	s.send=function (title,cont,classify,callback) {
 		$.post(
 			"/api/sendpsg",
 			{
-				"user"   : s.user,
-				"token"  : s.token,
-				"title"  : title,
-				"content": cont
+				"user"    : s.user,
+				"token"   : s.token,
+				"title"   : title,
+				"content" : cont,
+				"classify": classify
 			},
 			function (res) {
 				if(res=="noarg!"){
@@ -158,15 +159,16 @@ function sendPassage() {
 			}
 		);
 	};
-	s.edit=function (id,title,cont,callback) {
+	s.edit=function (id,title,cont,classify,callback) {
 		$.post(
 			"/api/editpsg",
 			{
-				"id"     : id,
-				"user"   : s.user,
-				"token"  : s.token,
-				"title"  : title,
-				"content": cont
+				"id"      : id,
+				"user"    : s.user,
+				"token"   : s.token,
+				"title"   : title,
+				"content" : cont,
+				"classify": classify
 			},
 			function (res) {
 				if(res=="noarg!"){

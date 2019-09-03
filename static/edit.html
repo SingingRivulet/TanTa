@@ -29,6 +29,7 @@
 					try {
 						$("#title").val(data.title);
 						$("#content").val(data.content);
+						$("#classify").val(data.classify);
 						id=d;
 					}catch (e) {
 						
@@ -58,10 +59,11 @@
 				$("#subm").click(function () {
 					var title=$("#title").val();
 					var cont=$("#content").val();
+					var classify=$("#classify").val();
 					if(id)
-						p.edit(id,title,cont);
+						p.edit(id,title,cont,classify);
 					else
-						p.send(title,cont,function (res) {
+						p.send(title,cont,classify,function (res) {
 							window.location.href="#"+res;
 						});
 				});
@@ -85,14 +87,15 @@
 		</script>
 	</head>
 	<body>
-		<input placeholder="标题" type="text" id="title"/>
+		<input placeholder="标题" type="text" id="title"/><br>
 		<div id="test-editormd">
 			<textarea id="content" class="form-control"></textarea>
 		</div><br>
-		<div style="float:right;">
+		<input placeholder="分类" type="text" id="classify"/>
+		<span style="float:right;">
 			<button id="subm" ></button>
 			<button id="subm_prev" >预览</button>
-		</div>
+		</span>
 		<div id="preview"></div>
 	</body>
 </html>

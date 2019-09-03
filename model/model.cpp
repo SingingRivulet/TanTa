@@ -102,9 +102,9 @@ int  model_passage_send_json    (const char * id,struct lwan_response * response
         lwan_strbuf_set(response->buffer,val.c_str(),val.size());
     }
 }
-void model_passage_add          (char * outid,int len,const char * title,const char * cont,const char * user){
+void model_passage_add          (char * outid,int len,const char * title,const char * cont,const char * classify,const char * user){
     std::string id;
-    m->addPassage(id,title,cont,user);
+    m->addPassage(id,title,cont,(classify?classify:std::string()),user);
     snprintf(outid,len,"%s",id.c_str());
 }
 void model_passage_preview      (const char * data,struct lwan_response * response){
@@ -138,8 +138,8 @@ void model_passage_preview      (const char * data,struct lwan_response * respon
     
     bufrelease(ob);
 }
-int  model_passage_set          (const char * id,const char * title,const char * cont,const char * user){
-    return m->setPassage(id,title,cont,user)?1:0;
+int  model_passage_set          (const char * id,const char * title,const char * cont,const char * classify,const char * user){
+    return m->setPassage(id,title,cont,(classify?classify:std::string()),user)?1:0;
 }
 int  model_passage_del          (const char * id){
     return m->delPassage(id)?1:0;

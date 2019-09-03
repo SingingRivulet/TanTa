@@ -16,6 +16,7 @@ LWAN_HANDLER(sendpsg)
     const char * token      = lwan_request_get_post_param(request,"token");
     const char * title      = lwan_request_get_post_param(request,"title");
     const char * content    = lwan_request_get_post_param(request,"content");
+    const char * classify   = lwan_request_get_post_param(request,"classify");
     if(user==NULL || token==NULL || title==NULL || content==NULL){
         static const char noarg[] = "noarg!";
         lwan_strbuf_set_static(response->buffer, noarg, sizeof(noarg) - 1);
@@ -29,7 +30,7 @@ LWAN_HANDLER(sendpsg)
     }
     
     char idbuf[128];
-    model_passage_add(idbuf,128,title,content,user);
+    model_passage_add(idbuf,128,title,content,classify,user);
     lwan_strbuf_set(response->buffer,idbuf,strlen(idbuf));
 
     return HTTP_OK;
@@ -44,6 +45,7 @@ LWAN_HANDLER(editpsg)
     const char * id         = lwan_request_get_post_param(request,"id");
     const char * title      = lwan_request_get_post_param(request,"title");
     const char * content    = lwan_request_get_post_param(request,"content");
+    const char * classify   = lwan_request_get_post_param(request,"classify");
     if(user==NULL || token==NULL || id==NULL || title==NULL || content==NULL){
         static const char noarg[] = "noarg!";
         lwan_strbuf_set_static(response->buffer, noarg, sizeof(noarg) - 1);
@@ -56,7 +58,7 @@ LWAN_HANDLER(editpsg)
         return HTTP_OK;
     }
     
-    if(model_passage_set(id,title,content,user)){
+    if(model_passage_set(id,title,content,classify,user)){
         static const char success[] = "success!";
         lwan_strbuf_set_static(response->buffer, success, sizeof(success) - 1);
     }else{
