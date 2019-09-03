@@ -26,6 +26,7 @@ void displayRender(
     const std::string & id,
     const std::string & title,
     const std::string & content,
+    const std::string & classify,
     const std::string & user,
     const std::string & time
 );
@@ -34,6 +35,7 @@ void contentRender(
     const std::string & id,
     const std::string & title,
     const std::string & content,
+    const std::string & classify,
     const std::string & user,
     const std::string & time
 );

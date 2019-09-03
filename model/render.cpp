@@ -82,6 +82,7 @@ void displayRender(
     const std::string & id,
     const std::string & title,
     const std::string & content,
+    const std::string & classify,
     const std::string & user,
     const std::string & time
 ){
@@ -94,7 +95,12 @@ void displayRender(
         titlefilter(title) +
         "</a></div><div class='psg-display'>" + 
         contHTML +
-        "</div><div class = 'psg-user'>" + user + "</div><time class = 'psg-time'>" + time + "</time>"
+        "</div>";
+    
+    if(!classify.empty())
+        res+="<div name='classify' class='classify'>"+titlefilter(classify)+"</div>";
+    
+    res+="<div class = 'psg-user'>" + user + "</div><time class = 'psg-time'>" + time + "</time>"
         "</section>\n";
 }
 void contentRender(
@@ -102,6 +108,7 @@ void contentRender(
     const std::string & id,
     const std::string & title,
     const std::string & content,
+    const std::string & classify,
     const std::string & user,
     const std::string & time
 ){
@@ -114,4 +121,7 @@ void contentRender(
         titlefilter(title) +
         "</a></div>" + "<div class = 'psg-content'>" +
         contHTML + "</div><div class = 'psg-user'>" + user + "</div><time class = 'psg-time'>" + time + "</time>";
+    
+    if(!classify.empty())
+        res+="<div name='classify' class='classify'>"+titlefilter(classify)+"</div>";
 }

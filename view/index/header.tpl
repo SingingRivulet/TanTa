@@ -63,6 +63,11 @@
 				padding-right: 1em;
 				color: rgba(0,0,0,0.3);
 			}
+			.classify{
+				display: inline;
+				padding-right: 1em;
+				color: rgba(0,0,0,0.3);
+			}
 			time{
 				color: rgba(0,0,0,0.3);
 			}

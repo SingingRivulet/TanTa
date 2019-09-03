@@ -167,7 +167,7 @@ class passage{
             free(out);
             
             cJSON_Delete(json);
-            render(id,title,content,user,tm);
+            render(id,title,content,classify,user,tm);
         }
         bool setPassage(//设置文章
             const std::string & id , 
@@ -221,7 +221,7 @@ class passage{
             
             cJSON_Delete(json);
             
-            render(id,title,content,user,tm);
+            render(id,title,content,classify,user,tm);
             
             return true;
         }
@@ -321,14 +321,15 @@ class passage{
             const std::string & id , 
             const std::string & title , 
             const std::string & content , 
+            const std::string & classify , 
             const std::string & user , 
             const std::string & tm
         ){
             std::string out;
-            displayRender(out,id,title,content,user,tm);
+            displayRender(out,id,title,content,classify,user,tm);
             cache->Put(leveldb::WriteOptions(), std::string("display_")+id, out);
             
-            contentRender(out,id,title,content,user,tm);
+            contentRender(out,id,title,content,classify,user,tm);
             cache->Put(leveldb::WriteOptions(), std::string("content_")+id, out);
             
             out=titlefilter(title);
