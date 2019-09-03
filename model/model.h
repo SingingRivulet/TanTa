@@ -21,6 +21,7 @@ int  model_passage_display_send (const char * id,struct lwan_response * response
 int  model_passage_title_send   (const char * id,struct lwan_response * response);
 
 void model_passage_getClassify  (const char * id,const char * startAt,struct lwan_response * response);
+void model_passage_getClasses   (const char * startAt,struct lwan_response * response);
 
 void model_passage_preview      (const char * id,struct lwan_response * response);
 

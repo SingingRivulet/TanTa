@@ -15,7 +15,17 @@ class classify{
         ~classify(){
             delete classifies;
         }
-        void add(const std::string & cla , const std::string & name){
+        std::string filter(const std::string & in){
+            std::string res = in;
+            int len = res.size();
+            for(int i=0;i<len;i++){
+                if(res[i]=='\n')
+                    res[i]==' ';
+            }
+            return res;
+        }
+        void add(const std::string & ocla , const std::string & name){
+            auto cla = filter(ocla);
             leveldb::WriteBatch batch;
             std::string prefix = std::string("class\n")+cla+"\n";
             
@@ -86,19 +96,34 @@ class classify{
             return searchPrefix(prefix , prefix+startAt , res , num);
         }
         
-        void del(const std::string & cla , const std::string & name){
+        void del(const std::string & ocla , const std::string & name){
+            auto cla = filter(ocla);
+            
             std::string prefix = std::string("class\n")+cla+"\n\n";
             
             classifies->Delete(leveldb::WriteOptions(), prefix+name);
+            
+            //自动回收
+            std::list<std::string> res;
+            get(cla,res,1);
+            if(res.empty()){
+                leveldb::WriteBatch batch;
+                
+                batch.Delete(std::string("classes\n")+cla);
+                batch.Delete(std::string("class\n")+cla+"\n");
+            
+                classifies->Write(leveldb::WriteOptions(), &batch);
+            }
+                
+            
         }
         
-        bool getClasses(const std::string & cla , std::list<std::string> & res , int num=10){
+        bool getClasses(std::list<std::string> & res , int num=10){
             std::string prefix = std::string("classes\n");
             return searchPrefix(prefix , prefix , res , num);
         }
         
         bool getClasses(
-            const std::string & cla , 
             const std::string & startAt ,
             std::list<std::string> & res , 
             int num=10

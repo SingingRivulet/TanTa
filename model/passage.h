@@ -334,6 +334,28 @@ class passage{
             out=titlefilter(title);
             cache->Put(leveldb::WriteOptions(), std::string("title_")+id, out);
         }
+        void getClasses(const std::string & startAt , std::string & res){
+            cJSON *json=cJSON_CreateArray();
+            
+            std::list<std::string> es;
+            
+            if(startAt.empty()){
+                classes.getClasses(es);
+            }else{
+                classes.getClasses(startAt , es);
+            }
+            
+            for(auto it : es){
+                cJSON_AddItemToArray(json,cJSON_CreateString(it.c_str()));
+            }
+            
+            char * out=cJSON_PrintUnformatted(json);
+            res = out;
+            free(out);
+            
+            cJSON_Delete(json);
+            
+        }
         void getPassageInClassify(const std::string & classify , const std::string & startAt , std::string & res){
             cJSON *json=cJSON_CreateArray();
             

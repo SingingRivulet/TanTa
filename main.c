@@ -25,6 +25,7 @@ main(void)
         { .prefix = "/api/preview", .handler = LWAN_HANDLER_REF(preview) },
         
         { .prefix = "/api/getClass", .handler = LWAN_HANDLER_REF(getClass) },
+        { .prefix = "/api/getClasses", .handler = LWAN_HANDLER_REF(getClasses) },
         
         { .prefix = "/api/login", .handler = LWAN_HANDLER_REF(login) },
         { .prefix = "/api/newuser", .handler = LWAN_HANDLER_REF(newuser) },

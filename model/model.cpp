@@ -138,6 +138,11 @@ void model_passage_preview      (const char * data,struct lwan_response * respon
     
     bufrelease(ob);
 }
+void model_passage_getClasses   (const char * startAt,struct lwan_response * response){
+    std::string res;
+    m->getClasses((startAt?startAt:std::string()),res);
+    lwan_strbuf_set(response->buffer,res.c_str(),res.size());
+}
 void model_passage_getClassify  (const char * id,const char * startAt,struct lwan_response * response){
     std::string res;
     m->getPassageInClassify(id,(startAt?startAt:std::string()),res);

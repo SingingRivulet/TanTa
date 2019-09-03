@@ -111,6 +111,16 @@ LWAN_HANDLER(getClass)
     return HTTP_OK;
 }
 
+LWAN_HANDLER(getClasses)
+{
+    response->mime_type = "text/html;charset=utf-8";
+    
+    const char * startAt   = lwan_request_get_query_param(request,"startAt");
+    
+    model_passage_getClasses(startAt , response);
+    
+    return HTTP_OK;
+}
 #if defined(__cplusplus)
 }
 #endif
