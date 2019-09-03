@@ -391,6 +391,8 @@ class passage{
             
             cJSON_Delete(json);
         }
+        
+        classify classes;
     private:
         
         leveldb::DB * passages;
@@ -398,8 +400,6 @@ class passage{
         leveldb::DB * cache;
         
         std::atomic<int> sendTimes;
-        
-        classify classes;
         
 };
 #endif

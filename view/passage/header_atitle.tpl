@@ -10,6 +10,21 @@
 			window.psgid=window.location.href.split("/")[4];
 			$(document).ready(function () {
 				$("section").addClass("well");
+				
+				var classify = $(".classify")
+				classify.addClass("label");
+				classify.addClass("label-info");
+				classify.css("float","right");
+				classify.click(function (d) {
+					try{
+						var classify = d.currentTarget.innerText;
+						window.location.href="/?classify="+escape(classify);
+					}catch (e) {
+						
+					}
+					return false;
+				});
+				
 				$("#top-menu").height(window.screen.height*0.5);
 				window.OriginTitile = document.title;
 				function leavingPage() {

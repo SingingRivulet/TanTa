@@ -40,6 +40,8 @@ LWAN_HANDLER(index){
     
     response->mime_type = "text/html;charset=utf-8";
     
+    const char * classify   = lwan_request_get_query_param(request,"classify");
+    
     if(request->url.len>0){
         const char * p;
         char c;
@@ -65,9 +67,9 @@ LWAN_HANDLER(index){
         lwan_strbuf_append_str(response->buffer, index_header, index_header_len);
     
     if(request->url.len>0)
-        psgstatus = model_passage_index_send(request->url.value , response);
+        psgstatus = model_passage_index_send(request->url.value , classify , response);
     else
-        psgstatus = model_passage_index_send(NULL,response);
+        psgstatus = model_passage_index_send(NULL , classify ,response);
     
     if(index_footer_len!=0)
         lwan_strbuf_append_str(response->buffer, index_footer, index_footer_len);

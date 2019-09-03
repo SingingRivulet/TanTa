@@ -21,6 +21,16 @@
 					}
 				});
 				
+				$(".classify").click(function (d) {
+					try{
+						var classify = d.currentTarget.innerText;
+						window.location.href="/?classify="+escape(classify);
+					}catch (e) {
+						
+					}
+					return false;
+				});
+				
 				$("#top-menu").height(window.screen.height);
 				
 				window.OriginTitile = document.title;

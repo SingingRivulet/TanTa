@@ -25,5 +25,5 @@ void model_passage_getClasses   (const char * startAt,struct lwan_response * res
 
 void model_passage_preview      (const char * id,struct lwan_response * response);
 
-int  model_passage_index_send   (const char * page,struct lwan_response * response);
+int  model_passage_index_send   (const char * page,const char * classify,struct lwan_response * response);
 #endif

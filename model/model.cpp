@@ -50,13 +50,21 @@ int  model_passage_display_send (const char * id,struct lwan_response * response
     }
     return 0;
 }
-int  model_passage_index_send   (const char * page,struct lwan_response * response){
+int  model_passage_index_send   (const char * page,const char * classify,struct lwan_response * response){
     std::list<std::string> ids;
     bool haveNext;
-    if(page){
-        haveNext=m->getIndex(ids,20,page);
+    if(classify){
+        if(page){
+            haveNext=m->classes.get(classify,page,ids,20);
+        }else{
+            haveNext=m->classes.get(classify,ids,20);
+        }
     }else{
-        haveNext=m->getIndex(ids,20);
+        if(page){
+            haveNext=m->getIndex(ids,20,page);
+        }else{
+            haveNext=m->getIndex(ids,20);
+        }
     }
     if(ids.empty()){
         if(!page)
