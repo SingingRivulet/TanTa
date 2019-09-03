@@ -71,6 +71,7 @@ class classify{
         
         bool get(const std::string & cla , std::list<std::string> & res , int num=10){
             std::string prefix = std::string("class\n")+cla+"\n";
+            
             return searchPrefix(prefix , prefix , res , num);
         }
         
@@ -80,12 +81,14 @@ class classify{
             std::list<std::string> & res , 
             int num=10
         ){
-            std::string prefix = std::string("class\n")+cla+"\n";
+            std::string prefix = std::string("class\n")+cla+"\n\n";
+            
             return searchPrefix(prefix , prefix+startAt , res , num);
         }
         
         void del(const std::string & cla , const std::string & name){
-            std::string prefix = std::string("class\n")+cla+"\n";
+            std::string prefix = std::string("class\n")+cla+"\n\n";
+            
             classifies->Delete(leveldb::WriteOptions(), prefix+name);
         }
         

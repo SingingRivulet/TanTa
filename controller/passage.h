@@ -99,6 +99,18 @@ LWAN_HANDLER(passage)
     return HTTP_OK;
 }
 
+LWAN_HANDLER(getClass)
+{
+    response->mime_type = "text/html;charset=utf-8";
+    
+    const char * classify   = lwan_request_get_query_param(request,"classify");
+    const char * startAt   = lwan_request_get_query_param(request,"startAt");
+    if(classify){
+        model_passage_getClassify(classify , startAt , response);
+    }
+    return HTTP_OK;
+}
+
 #if defined(__cplusplus)
 }
 #endif

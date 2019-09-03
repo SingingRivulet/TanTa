@@ -24,6 +24,8 @@ main(void)
         { .prefix = "/api/editpsg", .handler = LWAN_HANDLER_REF(editpsg) },
         { .prefix = "/api/preview", .handler = LWAN_HANDLER_REF(preview) },
         
+        { .prefix = "/api/getClass", .handler = LWAN_HANDLER_REF(getClass) },
+        
         { .prefix = "/api/login", .handler = LWAN_HANDLER_REF(login) },
         { .prefix = "/api/newuser", .handler = LWAN_HANDLER_REF(newuser) },
         { .prefix = "/api/isloged", .handler = LWAN_HANDLER_REF(isloged) },
