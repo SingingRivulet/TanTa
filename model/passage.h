@@ -306,10 +306,10 @@ class passage{
         
         void getTimeIndexer(std::string & idx){
             time_t myt=time(NULL);
-            long long idxn = 9223372036854775807;
+            uint64_t idxn = 0x7fffffffffffffff;
             idxn -= myt;//目的是让它倒序排列
             char buf[64];
-            snprintf(buf,64,"%lld",idxn);
+            snprintf(buf,64,"%016lx",idxn);
             idx = buf;
         }
         

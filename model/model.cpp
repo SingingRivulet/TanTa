@@ -92,9 +92,21 @@ int  model_passage_index_send   (const char * page,const char * classify,struct 
                         fcla+=c;
                     }else
                     if(c!='\0'){
+                        
+                        const static char mapping[] = "0123456789ABCDEF";
+                        
                         char buf[4];
-                        snprintf(buf,4,"%%%x",c);
+                        
+                        unsigned char low = c & 0x0f;//低4位
+                        unsigned char hei = (c >> 4) & 0x0f;//高4位
+                        
+                        buf[0]='%';
+                        buf[1]=mapping[hei];
+                        buf[2]=mapping[low];
+                        buf[3]='\0';
+                        
                         fcla+=buf;
+                        
                     }
                     
                     if(c=='\0')
