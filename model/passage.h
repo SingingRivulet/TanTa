@@ -61,6 +61,31 @@ class passage{
             return false;
         }
         
+        bool getPassageIndexer(
+            const std::string & id , 
+            std::string & index
+        ){
+            std::string value;
+            leveldb::Status s = passages->Get(leveldb::ReadOptions(), id, &value);
+            if (!s.ok() || value.empty())
+                return false;
+            
+            cJSON * json=cJSON_Parse(value.c_str());
+            if(json->type!=cJSON_Object){
+                cJSON_Delete(json);
+                return false;
+            }
+            
+            auto p = cJSON_GetObjectItem(json,"indexer");
+            
+            if(p && p->type==cJSON_String){
+                index = p->valuestring;
+            }
+        
+            cJSON_Delete(json);
+            return true;
+        }
+        
         bool getPassage(//获取
             const std::string & id , 
             std::string & title , 

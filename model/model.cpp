@@ -81,7 +81,35 @@ int  model_passage_index_send   (const char * page,const char * classify,struct 
     if(haveNext){
         auto rid=ids.rbegin();
         if(rid!=ids.rend()){
-            std::string np=std::string("\n<br/><a class='next-page' href='/")+*rid+"'>下一页</a></br/>";
+            std::string np=std::string("\n<br/><a class='next-page' href='/");
+            
+            if(classify){
+                std::string fcla;
+                const char * p = classify;
+                while(1){
+                    unsigned char c = *p;
+                    if((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9')){
+                        fcla+=c;
+                    }else
+                    if(c!='\0'){
+                        char buf[4];
+                        snprintf(buf,4,"%%%x",c);
+                        fcla+=buf;
+                    }
+                    
+                    if(c=='\0')
+                        break;
+                    else
+                        ++p;
+                }
+                np+=*rid+"?classify="+fcla;
+            }else{
+                std::string indexer;
+                m->getPassageIndexer(*rid , indexer);
+                np+=indexer;
+            }
+            
+            np+="'>下一页</a></br/>";
             const char * ptr = np.c_str();
             int len = np.size();
             lwan_strbuf_append_str(response->buffer, ptr, len);

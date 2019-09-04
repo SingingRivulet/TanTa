@@ -24,7 +24,7 @@
 				$(".classify").click(function (d) {
 					try{
 						var classify = d.currentTarget.innerText;
-						window.location.href="/?classify="+escape(classify);
+						window.location.href="/?classify="+encodeURIComponent(classify);
 					}catch (e) {
 						
 					}
